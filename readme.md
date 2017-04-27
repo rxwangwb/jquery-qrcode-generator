@@ -1,4 +1,4 @@
-#盘点了两种生成vCard二维码的方式
+# 盘点了两种生成vCard二维码的方式
 
 ## jquery-qrcode.min.js
 
