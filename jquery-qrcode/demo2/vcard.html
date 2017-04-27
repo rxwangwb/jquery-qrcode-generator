@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>名片生成</title>
+	<link rel="stylesheet" href="resources/Font-Awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="resources/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="resources/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+
+	<!-- jquery -->
+	<script src="resources/jquery/jquery-3.1.1.min.js"></script>
+    <script src="../jquery-qrcode-0.14.0/dist/jquery-qrcode.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="resources/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+        function generateVcard(){
+	        var personInfo = {};
+	        var varray = $('.vcardForm').serializeArray();
+	        console.log(varray);
+	        personInfo.full_name = 'FN:' + varray[0].value + '\r\n';
+	        personInfo.email ='EMAIL;TYPE=INTERNET;TYPE=HOME:' + varray[1].value+ '\r\n';
+	        personInfo.mobile ='TEL;TYPE=CELL:' + varray[2].value+ '\r\n';
+	        personInfo.home_address ='ADR;TYPE=HOME:' + varray[3].value+ '\r\n';
+	        console.log('BEGIN:VCARD\r\nVERSION:3.0\r\n' + personInfo.full_name + personInfo.email + personInfo.mobile + personInfo.home_address + 'END:VCARD');
+            return 'BEGIN:VCARD\r\nVERSION:3.0\r\n' + personInfo.full_name + personInfo.email + personInfo.mobile + personInfo.home_address + 'END:VCARD';
+        }
+
+	$(function(){
+$("#generateVcardQr").click(function(){
+	jQuery("#qrcodeid").empty().qrcode({
+            render: 'canvas',
+            ecLevel: 'H',
+            minVersion: '6',
+
+            fill: '#000',
+            background: null,
+            // fill: jq('#img-buffer')[0],
+
+            text: generateVcard(),
+            size: 200,
+            radius: 0,
+            quiet: 2,
+
+            mode: 4,
+
+            mSize: 0.1,
+            mPosX: 0.5,
+            mPosY: 0.5,
+
+            label: 'no label',
+            fontname: 'sans',
+            fontcolor: '#000',
+
+            image: $("#qrCodeImage")[0]
+        });
+});
+
+	})
+
+
+	</script>
+	<style type="text/css">
+		div.vcardFormDiv{
+			margin: 10% auto auto auto ;
+			width: 60%;
+		}
+
+		.show-grid {
+			margin-bottom: 15px;
+		}
+
+		.btn-operate{
+			color: #333;
+			padding-right: 15px;
+		}
+
+		.btn-operate:hover{
+			color: #333;
+		}
+
+		#qrcodeid{
+			height: 300px;
+  display: -webkit-flex;
+  display:         flex;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="vcardFormDiv">
+		<form class="vcardForm">
+			<div class="row show-grid nameInfo">
+				<div class="col-md-1"><span class="fa fa-user fa-lg" aria-hidden="true"></span></div>
+				<div class="col-md-6">
+					<input type="text" class="form-control" name="full_name" placeholder="姓名">
+				</div>
+			</div>
+			
+			
+			<div class="row show-grid">
+				<div class="col-md-1"><span class="fa fa-envelope fa-lg" aria-hidden="true"></span></div>
+				<div class="col-md-6">
+					<input type="text" class="form-control" name="email" placeholder="电子邮件">
+				</div>
+			</div>
+			<div class="row show-grid">
+				<div class="col-md-1"><span class="fa fa-phone fa-lg" aria-hidden="true"></span></div>
+				<div class="col-md-6">
+					<input type="text" class="form-control" name="mobile" placeholder="电话">
+				</div>
+			</div>
+			<div class="row show-grid">
+				<div class="col-md-1"><span class="fa fa-map-marker fa-lg" aria-hidden="true"></span></div>
+				<div class="col-md-6">
+					<input type="text" class="form-control" name="home_address" placeholder="家庭地址">
+				</div>
+			</div>
+			
+			<div class="row show-grid">
+				<div class="col-md-3 col-md-offset-1">
+					<button class="btn btn-default" id="generateVcard" type="button">生成vCard</button>
+				</div>
+				<div class="col-md-3">
+					<button class="btn btn-default" id="generateVcardQr" type="button">生成二维码</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div id = "qrcodeid" style="margin:auto"></div> 
+	<img src="dummy.png" id="qrCodeImage" style="display:none;">
+</body>
+</html>
